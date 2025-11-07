@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artempaques - Sistema de Cotizaciones</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="logo">
+                    <i class="fas fa-box"></i>
+                    <h1>Artempaques</h1>
+                </div>
+                <h2>Sistema de Cotizaciones</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="usuario@artempaques.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Ingresar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="screen">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-header">
+                    <i class="fas fa-box"></i>
+                    <span>Artempaques</span>
+                </div>
+                <div class="user-menu">
+                    <button class="btn-icon" onclick="showUserMenu()">
+                        <i class="fas fa-user-circle"></i>
+                        <span class="username">Juan Pérez</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="user-dropdown">
+                        <button onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Cerrar sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Screen -->
+        <div id="dashboard-screen" class="screen-content">
+            <div class="container">
+                <h1 class="page-title">Dashboard</h1>
+                
+                <!-- Quick Access Cards -->
+                <div class="cards-grid">
+                    <div class="card" onclick="showScreen('new-quote-screen')">
+                        <div class="card-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <h3>Nueva cotización</h3>
+                        <p>Crear nueva cotización</p>
+                    </div>
+                    
+                    <div class="card" onclick="showScreen('quotes-list-screen')">
+                        <div class="card-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <h3>Cotizaciones</h3>
+                        <p>Ver y gestionar cotizaciones</p>
+                    </div>
+                    
+                    <div class="card" onclick="showScreen('orders-list-screen')">
+                        <div class="card-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>Pedidos</h3>
+                        <p>Ver y gestionar pedidos</p>
+                    </div>
+                    
+                    <div class="card" onclick="showScreen('availability-screen')">
+                        <div class="card-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Disponibilidad</h3>
+                        <p>Consultar stock de productos</p>
+                    </div>
+                    
+                    <div class="card" onclick="showScreen('clients-screen')">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Clientes</h3>
+                        <p>Gestionar clientes</p>
+                    </div>
+                </div>
+
+                <!-- Recent Quotes -->
+                <div class="recent-section">
+                    <h2>Últimas cotizaciones</h2>
+                    <div class="recent-list">
+                        <div class="recent-item">
+                            <div class="recent-info">
+                                <span class="recent-number">COT-00124</span>
+                                <span class="recent-client">Industrias Gómez</span>
+                                <span class="recent-date">Hoy, 2:30 PM</span>
+                            </div>
+                            <span class="badge badge-sent">Enviada</span>
+                        </div>
+                        <div class="recent-item">
+                            <div class="recent-info">
+                                <span class="recent-number">COT-00123</span>
+                                <span class="recent-client">Comercial López</span>
+                                <span class="recent-date">Ayer, 11:45 AM</span>
+                            </div>
+                            <span class="badge badge-approved">Aprobada</span>
+                        </div>
+                        <div class="recent-item">
+                            <div class="recent-info">
+                                <span class="recent-number">COT-00122</span>
+                                <span class="recent-client">Empresas Martínez</span>
+                                <span class="recent-date">15 Oct, 4:20 PM</span>
+                            </div>
+                            <span class="badge badge-expired">Vencida</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Quote Screen -->
+        <div id="new-quote-screen" class="screen-content">
+            <div class="container">
+                <div class="page-header">
+                    <button class="btn-icon" onclick="showScreen('dashboard-screen')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="page-title">Nueva cotización</h1>
+                </div>
+
+                <form id="quote-form" class="quote-form">
+                    <!-- Client Section -->
+                    <div class="form-section">
+                        <h2>Cliente</h2>
+                        <div class="form-group">
+                            <label for="client-search">Buscar cliente</label>
+                            <div class="search-container">
+                                <input type="text" id="client-search" placeholder="Escriba nombre o NIT del cliente">
+                                <button type="button" class="btn btn-secondary">Buscar</button>
+                            </div>
+                        </div>
+                        <div class="client-info" id="client-info">
+                            <div class="client-details">
+                                <h3>Industrias Gómez S.A.</h3>
+                                <p>NIT: 890.123.456-7</p>
+                                <p>Contacto: Carlos Rodríguez</p>
+                                <p>Tel: (604) 234-5678</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Items Section -->
+                    <div class="form-section">
+                        <h2>Ítems</h2>
+                        <div class="items-table">
+                            <div class="table-header">
+                                <div class="col-product">Producto</div>
+                                <div class="col-qty">Cantidad</div>
+                                <div class="col-price">Precio Unit.</div>
+                                <div class="col-discount">Descuento %</div>
+                                <div class="col-tax">Impuesto %</div>
+                                <div class="col-subtotal">Subtotal</div>
+                                <div class="col-actions"></div>
+                            </div>
+                            
+                            <div class="table-body" id="items-list">
+                                <div class="table-row">
+                                    <div class="col-product">
+                                        <input type="text" placeholder="Producto" value="Bolsa plástica 30x40cm">
+                                    </div>
+                                    <div class="col-qty">
+                                        <input type="number" placeholder="Cant" value="1000" min="1">
+                                    </div>
+                                    <div class="col-price">
+                                        <input type="number" placeholder="Precio" value="0.25" step="0.01" min="0">
+                                    </div>
+                                    <div class="col-discount">
+                                        <input type="number" placeholder="Desc%" value="5" min="0" max="100">
+                                    </div>
+                                    <div class="col-tax">
+                                        <input type="number" placeholder="Imp%" value="19" min="0" max="100">
+                                    </div>
+                                    <div class="col-subtotal">
+                                        <span class="subtotal">$237.50</span>
+                                    </div>
+                                    <div class="col-actions">
+                                        <button type="button" class="btn-icon btn-danger" onclick="removeItem(this)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-outline" onclick="addItem()">
+                                <i class="fas fa-plus"></i>
+                                Agregar ítem
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Totals Section -->
+                    <div class="form-section">
+                        <div class="totals-container">
+                            <div class="totals-row">
+                                <span>Subtotal:</span>
+                                <span id="subtotal">$250.00</span>
+                            </div>
+                            <div class="totals-row">
+                                <span>Descuentos:</span>
+                                <span id="discounts">-$12.50</span>
+                            </div>
+                            <div class="totals-row">
+                                <span>Impuestos:</span>
+                                <span id="taxes">$47.50</span>
+                            </div>
+                            <div class="totals-row total">
+                                <span>Total:</span>
+                                <span id="total">$285.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="saveDraft()">
+                            <i class="fas fa-save"></i>
+                            Guardar borrador
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="previewQuote()">
+                            <i class="fas fa-eye"></i>
+                            Previsualizar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar cotización
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Quote Preview Screen -->
+        <div id="quote-preview-screen" class="screen-content">
+            <div class="container">
+                <div class="page-header">
+                    <button class="btn-icon" onclick="showScreen('new-quote-screen')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="page-title">Resumen de cotización</h1>
+                </div>
+
+                <div class="quote-preview">
+                    <div class="quote-header">
+                        <div class="quote-company">
+                            <h2>Artempaques S.A.</h2>
+                            <p>Calle 50 #25-123, Medellín</p>
+                            <p>NIT: 890.123.456-7</p>
+                        </div>
+                        <div class="quote-info">
+                            <h3>Cotización #COT-00124</h3>
+                            <p>Fecha: 7 de noviembre de 2025</p>
+                            <p>Validez: 30 días</p>
+                        </div>
+                    </div>
+
+                    <div class="quote-client">
+                        <h3>Cliente</h3>
+                        <p><strong>Industrias Gómez S.A.</strong></p>
+                        <p>NIT: 890.123.456-7</p>
+                        <p>Contacto: Carlos Rodríguez</p>
+                        <p>Tel: (604) 234-5678</p>
+                    </div>
+
+                    <div class="quote-items">
+                        <h3>Ítems</h3>
+                        <table class="preview-table">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unit.</th>
+                                    <th>Descuento</th>
+                                    <th>Impuesto</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Bolsa plástica 30x40cm</td>
+                                    <td>1,000</td>
+                                    <td>$0.25</td>
+                                    <td>5%</td>
+                                    <td>19%</td>
+                                    <td>$237.50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="quote-totals">
+                        <div class="totals-row">
+                            <span>Subtotal:</span>
+                            <span>$250.00</span>
+                        </div>
+                        <div class="totals-row">
+                            <span>Descuentos:</span>
+                            <span>-$12.50</span>
+                        </div>
+                        <div class="totals-row">
+                            <span>Impuestos:</span>
+                            <span>$47.50</span>
+                        </div>
+                        <div class="totals-row total">
+                            <span>Total:</span>
+                            <span>$285.00</span>
+                        </div>
+                    </div>
+
+                    <div class="quote-conditions">
+                        <h3>Condiciones comerciales</h3>
+                        <ul>
+                            <li>Forma de pago: 30 días</li>
+                            <li>Tiempo de entrega: 15 días hábiles</li>
+                            <li>Validez de la cotización: 30 días</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="editQuote()">
+                        <i class="fas fa-edit"></i>
+                        Editar
+                    </button>
+                    <button type="button" class="btn btn-outline" onclick="sendPDF()">
+                        <i class="fas fa-file-pdf"></i>
+                        Enviar PDF
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="convertToOrder()">
+                        <i class="fas fa-shopping-cart"></i>
+                        Convertir a pedido
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Convert to Order Screen -->
+        <div id="convert-order-screen" class="screen-content">
+            <div class="container">
+                <div class="page-header">
+                    <button class="btn-icon" onclick="showScreen('quote-preview-screen')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="page-title">Convertir a pedido</h1>
+                </div>
+
+                <form id="order-form" class="order-form">
+                    <div class="form-section">
+                        <h2>Información del pedido</h2>
+                        
+                        <div class="form-group">
+                            <label for="delivery-date">Fecha de entrega</label>
+                            <input type="date" id="delivery-date" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="order-notes">Notas y condiciones de entrega</label>
+                            <textarea id="order-notes" rows="4" placeholder="Ingrese notas sobre la entrega, horarios, dirección alternativa, etc."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="priority">Prioridad</label>
+                            <select id="priority">
+                                <option value="normal">Normal</option>
+                                <option value="urgent">Urgente</option>
+                                <option value="express">Express</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <h3>Resumen del pedido</h3>
+                        <div class="summary-item">
+                            <span>Cotización:</span>
+                            <span>COT-00124</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Cliente:</span>
+                            <span>Industrias Gómez S.A.</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Total:</span>
+                            <span class="total">$285.00</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="showScreen('quote-preview-screen')">
+                            <i class="fas fa-times"></i>
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i>
+                            Crear pedido
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Availability Screen -->
+        <div id="availability-screen" class="screen-content">
+            <div class="container">
+                <div class="page-header">
+                    <button class="btn-icon" onclick="showScreen('dashboard-screen')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="page-title">Disponibilidad</h1>
+                </div>
+
+                <div class="search-section">
+                    <div class="form-group">
+                        <label for="product-search">Buscar producto</label>
+                        <div class="search-container">
+                            <input type="text" id="product-search" placeholder="Nombre o código del producto">
+                            <button type="button" class="btn btn-primary" onclick="searchProduct()">
+                                <i class="fas fa-search"></i>
+                                Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="availability-results" id="availability-results">
+                    <div class="product-card">
+                        <div class="product-info">
+                            <h3>Bolsa plástica 30x40cm</h3>
+                            <p class="product-code">Código: BOL-3040</p>
+                            <p class="product-status available">✓ Disponible</p>
+                        </div>
+                        <div class="product-stock">
+                            <div class="stock-total">
+                                <span class="stock-label">Disponible total:</span>
+                                <span class="stock-quantity">15,250 unidades</span>
+                            </div>
+                            <div class="stock-lots">
+                                <h4>Lotes:</h4>
+                                <div class="lot-item">
+                                    <span class="lot-code">L2025-001</span>
+                                    <span class="lot-quantity">8,500 unidades</span>
+                                </div>
+                                <div class="lot-item">
+                                    <span class="lot-code">L2025-002</span>
+                                    <span class="lot-quantity">6,750 unidades</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-info">
+                            <h3>Película stretch 500mm</h3>
+                            <p class="product-code">Código: PEL-500</p>
+                            <p class="product-status low-stock">⚡ Stock bajo</p>
+                        </div>
+                        <div class="product-stock">
+                            <div class="stock-total">
+                                <span class="stock-label">Disponible total:</span>
+                                <span class="stock-quantity">450 rollos</span>
+                            </div>
+                            <div class="stock-lots">
+                                <h4>Lotes:</h4>
+                                <div class="lot-item">
+                                    <span class="lot-code">L2025-003</span>
+                                    <span class="lot-quantity">450 rollos</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-state" id="empty-state" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <h3>No se encontraron productos</h3>
+                    <p>Intenta con otro nombre o código</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quotes List Screen -->
+        <div id="quotes-list-screen" class="screen-content">
+            <div class="container">
+                <div class="page-header">
+                    <button class="btn-icon" onclick="showScreen('dashboard-screen')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="page-title">Cotizaciones</h1>
+                    <button class="btn btn-primary btn-mobile-fab" onclick="showScreen('new-quote-screen')">
+                        <i class="fas fa-plus"></i>
+                        Nueva
+                    </button>
+                </div>
+
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="status-filter">Estado</label>
+                        <select id="status-filter" onchange="filterQuotes()">
+                            <option value="">Todos</option>
+                            <option value="draft">Borrador</option>
+                            <option value="sent">Enviada</option>
+                            <option value="approved">Aprobada</option>
+                            <option value="expired">Vencida</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="client-filter">Cliente</label>
+                        <input type="text" id="client-filter" placeholder="Buscar cliente" onkeyup="filterQuotes()">
+                    </div>
+                </div>
+
+                <div class="quotes-list" id="quotes-list">
+                    <div class="quote-item">
+                        <div class="quote-info">
+                            <div class="quote-header-info">
+                                <span class="quote-number">COT-00124</span>
+                                <span class="badge badge-sent">Enviada</span>
+                            </div>
+                            <div class="quote-details">
+                                <span class="quote-client">Industrias Gómez S.A.</span>
+                                <span class="quote-date">Hoy, 2:30 PM</span>
+                            </div>
+                            <div class="quote-total">
+                                <span>$285.00</span>
+                            </div>
+                        </div>
+                        <div class="quote-actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewQuote('COT-00124')">
+                                <i class="fas fa-eye"></i>
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="duplicateQuote('COT-00124')">
+                                <i class="fas fa-copy"></i>
+                                Duplicar
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="convertQuoteToOrder('COT-00124')">
+                                <i class="fas fa-shopping-cart"></i>
+                                Convertir
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quote-item">
+                        <div class="quote-info">
+                            <div class="quote-header-info">
+                                <span class="quote-number">COT-00123</span>
+                                <span class="badge badge-approved">Aprobada</span>
+                            </div>
+                            <div class="quote-details">
+                                <span class="quote-client">Comercial López</span>
+                                <span class="quote-date">Ayer, 11:45 AM</span>
+                            </div>
+                            <div class="quote-total">
+                                <span>$1,450.00</span>
+                            </div>
+                        </div>
+                        <div class="quote-actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewQuote('COT-00123')">
+                                <i class="fas fa-eye"></i>
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="duplicateQuote('COT-00123')">
+                                <i class="fas fa-copy"></i>
+                                Duplicar
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="convertQuoteToOrder('COT-00123')">
+                                <i class="fas fa-shopping-cart"></i>
+                                Convertir
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quote-item">
+                        <div class="quote-info">
+                            <div class="quote-header-info">
+                                <span class="quote-number">COT-00122</span>
+                                <span class="badge badge-expired">Vencida</span>
+                            </div>
+                            <div class="quote-details">
+                                <span class="quote-client">Empresas Martínez</span>
+                                <span class="quote-date">15 Oct, 4:20 PM</span>
+                            </div>
+                            <div class="quote-total">
+                                <span>$890.00</span>
+                            </div>
+                        </div>
+                        <div class="quote-actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewQuote('COT-00122')">
+                                <i class="fas fa-eye"></i>
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="duplicateQuote('COT-00122')">
+                                <i class="fas fa-copy"></i>
+                                Duplicar
+                            </button>
+                            <button class="btn btn-sm btn-secondary" disabled>
+                                <i class="fas fa-shopping-cart"></i>
+                                Convertir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-state" id="no-quotes" style="display: none;">
+                    <i class="fas fa-file-invoice"></i>
+                    <h3>No hay cotizaciones</h3>
+                    <p>Crea tu primera cotización para comenzar</p>
+                    <button class="btn btn-primary" onclick="showScreen('new-quote-screen')">
+                        <i class="fas fa-plus"></i>
+                        Nueva cotización
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders List Screen -->
+        <div id="orders-list-screen" class="screen-content">
+            <div class="container">
+                <div class="page-header">
+                    <button class="btn-icon" onclick="showScreen('dashboard-screen')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="page-title">Pedidos</h1>
+                </div>
+
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="order-status-filter">Estado</label>
+                        <select id="order-status-filter" onchange="filterOrders()">
+                            <option value="">Todos</option>
+                            <option value="open">Abierto</option>
+                            <option value="in-production">En producción</option>
+                            <option value="dispatched">Despachado</option>
+                            <option value="delivered">Entregado</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="order-client-filter">Cliente</label>
+                        <input type="text" id="order-client-filter" placeholder="Buscar cliente" onkeyup="filterOrders()">
+                    </div>
+                </div>
+
+                <div class="orders-list" id="orders-list">
+                    <div class="order-item">
+                        <div class="order-info">
+                            <div class="order-header-info">
+                                <span class="order-number">PED-00156</span>
+                                <span class="badge badge-in-production">En producción</span>
+                            </div>
+                            <div class="order-details">
+                                <span class="order-client">Industrias Gómez S.A.</span>
+                                <span class="order-date">Entrega: 25 Nov 2025</span>
+                            </div>
+                            <div class="order-total">
+                                <span>$285.00</span>
+                            </div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewOrder('PED-00156')">
+                                <i class="fas fa-eye"></i>
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="trackOrder('PED-00156')">
+                                <i class="fas fa-truck"></i>
+                                Seguir
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="order-item">
+                        <div class="order-info">
+                            <div class="order-header-info">
+                                <span class="order-number">PED-00155</span>
+                                <span class="badge badge-dispatched">Despachado</span>
+                            </div>
+                            <div class="order-details">
+                                <span class="order-client">Comercial López</span>
+                                <span class="order-date">Entrega: 20 Nov 2025</span>
+                            </div>
+                            <div class="order-total">
+                                <span>$1,450.00</span>
+                            </div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewOrder('PED-00155')">
+                                <i class="fas fa-eye"></i>
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="trackOrder('PED-00155')">
+                                <i class="fas fa-truck"></i>
+                                Seguir
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="order-item">
+                        <div class="order-info">
+                            <div class="order-header-info">
+                                <span class="order-number">PED-00154</span>
+                                <span class="badge badge-open">Abierto</span>
+                            </div>
+                            <div class="order-details">
+                                <span class="order-client">Empresas Martínez</span>
+                                <span class="order-date">Entrega: 28 Nov 2025</span>
+                            </div>
+                            <div class="order-total">
+                                <span>$890.00</span>
+                            </div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewOrder('PED-00154')">
+                                <i class="fas fa-eye"></i>
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="trackOrder('PED-00154')">
+                                <i class="fas fa-truck"></i>
+                                Seguir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-state" id="no-orders" style="display: none;">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>No hay pedidos</h3>
+                    <p>Los pedidos se crean desde las cotizaciones aprobadas</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clients Screen -->
+        <div id="clients-screen" class="screen-content">
+            <div class="container">
+                <div class="page-header">
+                    <button class="btn-icon" onclick="showScreen('dashboard-screen')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="page-title">Clientes</h1>
+                    <button class="btn btn-primary btn-mobile-fab" onclick="showNewClientForm()">
+                        <i class="fas fa-plus"></i>
+                        Nuevo
+                    </button>
+                </div>
+
+                <div class="search-section">
+                    <div class="form-group">
+                        <label for="client-search-input">Buscar cliente</label>
+                        <input type="text" id="client-search-input" placeholder="Nombre o NIT" onkeyup="searchClients()">
+                    </div>
+                </div>
+
+                <div class="clients-list" id="clients-list">
+                    <div class="client-item">
+                        <div class="client-info">
+                            <h3>Industrias Gómez S.A.</h3>
+                            <p>NIT: 890.123.456-7</p>
+                            <p>Contacto: Carlos Rodríguez</p>
+                            <p>Tel: (604) 234-5678</p>
+                        </div>
+                        <div class="client-actions">
+                            <button class="btn btn-sm btn-outline" onclick="editClient('8901234567')">
+                                <i class="fas fa-edit"></i>
+                                Editar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="client-item">
+                        <div class="client-info">
+                            <h3>Comercial López</h3>
+                            <p>NIT: 900.987.654-3</p>
+                            <p>Contacto: María López</p>
+                            <p>Tel: (604) 876-5432</p>
+                        </div>
+                        <div class="client-actions">
+                            <button class="btn btn-sm btn-outline" onclick="editClient('9009876543')">
+                                <i class="fas fa-edit"></i>
+                                Editar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-state" id="no-clients" style="display: none;">
+                    <i class="fas fa-users"></i>
+                    <h3>No se encontraron clientes</h3>
+                    <p>Intenta con otro nombre o NIT</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
