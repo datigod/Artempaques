@@ -1224,6 +1224,602 @@ input::placeholder, textarea::placeholder {
     }
 }
 
+/* ========================================
+   ITERACIÓN 2 - MEJORAS DE TOTALES Y CTA
+   ======================================== */
+
+/* Sticky Totals Bar (Nueva Cotización) */
+.sticky-totals-bar {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--white);
+    border-top: 2px solid var(--primary);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-4);
+    z-index: 90;
+    margin-top: var(--spacing-6);
+}
+
+.totals-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-4);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.totals-breakdown {
+    display: flex;
+    gap: var(--spacing-6);
+    flex-wrap: wrap;
+}
+
+.totals-small-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.totals-small-row .label {
+    font-size: var(--font-size-xs);
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.totals-small-row span:not(.label) {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.totals-small-row .negative {
+    color: var(--error);
+}
+
+.total-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: var(--primary-light);
+    padding: var(--spacing-3) var(--spacing-5);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--primary);
+}
+
+.total-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.total-amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    line-height: 1.2;
+}
+
+/* Sticky CTA Bar (Resumen y Convertir) */
+.sticky-cta-bar {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--white);
+    border-top: 2px solid var(--primary);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-4);
+    z-index: 90;
+    margin-top: var(--spacing-6);
+}
+
+.cta-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-4);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cta-total-compact {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-light);
+    padding: var(--spacing-3) var(--spacing-5);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--primary);
+    min-width: 180px;
+}
+
+.cta-total-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cta-total-amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    line-height: 1.2;
+}
+
+.cta-actions {
+    display: flex;
+    gap: var(--spacing-3);
+    flex-wrap: wrap;
+}
+
+/* CTA Primary Button - Destacado */
+.btn-cta-primary {
+    background-color: var(--primary);
+    color: var(--white);
+    border: 2px solid var(--primary);
+    padding: var(--spacing-3) var(--spacing-6);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(13, 71, 161, 0.3);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-cta-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-cta-primary:hover:not(:disabled)::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-cta-primary:hover:not(:disabled) {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(13, 71, 161, 0.4);
+}
+
+.btn-cta-primary:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(13, 71, 161, 0.3);
+}
+
+.btn-cta-primary:disabled {
+    background-color: var(--gray-300);
+    border-color: var(--gray-300);
+    color: var(--gray-500);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Quote Totals Summary - Resumen mejorado */
+.quote-totals-summary {
+    background-color: var(--gray-50);
+    border: 2px solid var(--primary-light);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-6);
+    margin-bottom: var(--spacing-6);
+}
+
+.totals-detail {
+    margin-bottom: var(--spacing-4);
+    padding-bottom: var(--spacing-4);
+    border-bottom: 1px solid var(--gray-300);
+}
+
+.totals-detail .totals-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-2) 0;
+    color: var(--gray-700);
+}
+
+.totals-detail .negative {
+    color: var(--error);
+}
+
+.total-highlight {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-light);
+    padding: var(--spacing-4);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--primary);
+}
+
+.total-highlight .total-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    text-transform: uppercase;
+}
+
+.total-highlight .total-amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+/* Order Summary - Total destacado */
+.order-summary .total-item {
+    background-color: var(--primary-light);
+    padding: var(--spacing-3);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--primary);
+    margin-top: var(--spacing-3);
+}
+
+.order-summary .total-item .total-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.order-summary .total-item .total-amount {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+/* Quote List - Total prominente */
+.quote-total-prominent {
+    background-color: var(--primary-light);
+    padding: var(--spacing-2) var(--spacing-3);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: var(--spacing-2);
+}
+
+.total-label-small {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--primary-dark);
+    text-transform: uppercase;
+}
+
+.total-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+/* ========================================
+   DISPONIBILIDAD - CARDS COMPACTAS
+   ======================================== */
+
+.product-card-compact {
+    background-color: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+    display: flex;
+    gap: var(--spacing-4);
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+}
+
+.product-card-compact:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-light);
+}
+
+.product-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border-radius: var(--border-radius);
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.product-icon.warning {
+    background-color: #FFF3E0;
+    color: var(--warning);
+}
+
+.product-icon.danger {
+    background-color: #FFEBEE;
+    color: var(--error);
+}
+
+.product-main-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+}
+
+.product-name-code h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: var(--spacing-1);
+}
+
+.product-name-code .product-code {
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+    font-family: 'Courier New', monospace;
+    margin: 0;
+}
+
+/* Stock Badges */
+.badge-stock {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    padding: var(--spacing-2) var(--spacing-3);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.badge-stock-ok {
+    background-color: #E8F5E8;
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+
+.badge-stock-low {
+    background-color: #FFF3E0;
+    color: var(--warning);
+    border: 1px solid var(--warning);
+}
+
+.badge-stock-out {
+    background-color: #FFEBEE;
+    color: var(--error);
+    border: 1px solid var(--error);
+}
+
+.product-stock-summary {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-2);
+    flex-wrap: wrap;
+}
+
+.stock-label {
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+}
+
+.stock-quantity-large {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+.stock-quantity-large.warning {
+    color: var(--warning);
+}
+
+.stock-quantity-large.danger {
+    color: var(--error);
+}
+
+.stock-unit {
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+}
+
+/* Accordion Button */
+.btn-accordion {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2) var(--spacing-3);
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    color: var(--primary);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-accordion:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.btn-accordion:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.accordion-icon {
+    transition: transform var(--transition-normal);
+}
+
+.btn-accordion.active .accordion-icon {
+    transform: rotate(180deg);
+}
+
+/* Accordion Content */
+.product-lots-accordion {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-normal) ease-out;
+}
+
+.product-lots-accordion.open {
+    max-height: 500px;
+    transition: max-height var(--transition-normal) ease-in;
+}
+
+.lots-content {
+    padding-top: var(--spacing-3);
+    border-top: 1px solid var(--gray-200);
+    margin-top: var(--spacing-3);
+}
+
+.lots-content h4 {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: var(--spacing-2);
+}
+
+.lots-content .lot-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-2);
+    background-color: var(--gray-50);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-1);
+}
+
+.lots-content .no-lots {
+    text-align: center;
+    color: var(--gray-500);
+    font-style: italic;
+    padding: var(--spacing-3);
+}
+
+/* ========================================
+   RESPONSIVE - ITERACIÓN 2
+   ======================================== */
+
+@media (max-width: 768px) {
+    .sticky-totals-bar,
+    .sticky-cta-bar {
+        padding: var(--spacing-3);
+    }
+
+    .totals-summary {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .totals-breakdown {
+        flex-direction: column;
+        gap: var(--spacing-2);
+        margin-bottom: var(--spacing-3);
+    }
+
+    .total-main {
+        align-items: center;
+    }
+
+    .total-amount {
+        font-size: 24px;
+    }
+
+    .cta-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cta-total-compact {
+        align-items: center;
+        min-width: auto;
+    }
+
+    .cta-total-amount {
+        font-size: 20px;
+    }
+
+    .cta-actions {
+        flex-direction: column;
+    }
+
+    .cta-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-cta-primary {
+        padding: var(--spacing-4);
+        font-size: var(--font-size-lg);
+    }
+
+    .product-card-compact {
+        flex-direction: column;
+    }
+
+    .product-icon {
+        align-self: flex-start;
+    }
+
+    .product-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .badge-stock {
+        align-self: flex-start;
+    }
+
+    .quote-total-prominent {
+        align-items: flex-start;
+    }
+
+    .total-value {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .total-amount {
+        font-size: 20px;
+    }
+
+    .total-label {
+        font-size: 14px;
+    }
+
+    .stock-quantity-large {
+        font-size: 18px;
+    }
+
+    .product-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
 /* Utility Classes */
 .text-center {
     text-align: center;
