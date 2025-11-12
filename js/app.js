@@ -285,9 +285,9 @@ class ArtempaquesApp {
         const rows = document.querySelectorAll('#items-list .table-row');
         rows.forEach(row => {
             const quantity = parseFloat(row.querySelector('.col-qty input').value) || 0;
-            const price = parseFloat(row.querySelector('col-price input').value) || 0;
-            const discount = parseFloat(row.querySelector('col-discount input').value) || 0;
-            const tax = parseFloat(row.querySelector('col-tax input').value) || 0;
+            const price = parseFloat(row.querySelector('.col-price input').value) || 0;
+            const discount = parseFloat(row.querySelector('.col-discount input').value) || 0;
+            const tax = parseFloat(row.querySelector('.col-tax input').value) || 0;
 
             const itemSubtotal = quantity * price;
             const itemDiscount = itemSubtotal * (discount / 100);
@@ -304,10 +304,16 @@ class ArtempaquesApp {
 
         const total = subtotal - totalDiscounts + totalTaxes;
 
-        document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-        document.getElementById('discounts').textContent = `-$${totalDiscounts.toFixed(2)}`;
-        document.getElementById('taxes').textContent = `$${totalTaxes.toFixed(2)}`;
-        document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        // Update sticky bar totals (Iteración 2)
+        const subtotalSticky = document.getElementById('subtotal-sticky');
+        const discountsSticky = document.getElementById('discounts-sticky');
+        const taxesSticky = document.getElementById('taxes-sticky');
+        const totalSticky = document.getElementById('total-sticky');
+
+        if (subtotalSticky) subtotalSticky.textContent = `$${subtotal.toFixed(2)}`;
+        if (discountsSticky) discountsSticky.textContent = `-$${totalDiscounts.toFixed(2)}`;
+        if (taxesSticky) taxesSticky.textContent = `$${totalTaxes.toFixed(2)}`;
+        if (totalSticky) totalSticky.textContent = `$${total.toFixed(2)}`;
     }
 
     searchClient() {
@@ -639,6 +645,27 @@ function logout() {
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new ArtempaquesApp();
 });
+
+// Toggle Lots Accordion (Iteración 2 - Disponibilidad)
+function toggleLots(button) {
+    const accordion = button.nextElementSibling;
+    const isOpen = accordion.classList.contains('open');
+    
+    // Close all accordions
+    document.querySelectorAll('.product-lots-accordion').forEach(acc => {
+        acc.classList.remove('open');
+    });
+    
+    document.querySelectorAll('.btn-accordion').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Toggle current accordion
+    if (!isOpen) {
+        accordion.classList.add('open');
+        button.classList.add('active');
+    }
+}
 
 // Close dropdowns when clicking outside
 document.addEventListener('click', (e) => {
