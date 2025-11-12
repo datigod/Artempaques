@@ -221,29 +221,7 @@
                         </div>
                     </div>
 
-                    <!-- Totals Section -->
-                    <div class="form-section">
-                        <div class="totals-container">
-                            <div class="totals-row">
-                                <span>Subtotal:</span>
-                                <span id="subtotal">$250.00</span>
-                            </div>
-                            <div class="totals-row">
-                                <span>Descuentos:</span>
-                                <span id="discounts">-$12.50</span>
-                            </div>
-                            <div class="totals-row">
-                                <span>Impuestos:</span>
-                                <span id="taxes">$47.50</span>
-                            </div>
-                            <div class="totals-row total">
-                                <span>Total:</span>
-                                <span id="total">$285.00</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Actions -->
+                    <!-- Actions (moved before sticky footer) -->
                     <div class="form-actions">
                         <button type="button" class="btn btn-secondary" onclick="saveDraft()">
                             <i class="fas fa-save"></i>
@@ -259,6 +237,30 @@
                         </button>
                     </div>
                 </form>
+
+                <!-- Sticky Totals Bar (outside form for better positioning) -->
+                <div class="sticky-totals-bar">
+                    <div class="totals-summary">
+                        <div class="totals-breakdown">
+                            <div class="totals-small-row">
+                                <span class="label">Subtotal:</span>
+                                <span id="subtotal-sticky">$250.00</span>
+                            </div>
+                            <div class="totals-small-row">
+                                <span class="label">Descuentos:</span>
+                                <span id="discounts-sticky" class="negative">-$12.50</span>
+                            </div>
+                            <div class="totals-small-row">
+                                <span class="label">Impuestos:</span>
+                                <span id="taxes-sticky">$47.50</span>
+                            </div>
+                        </div>
+                        <div class="total-main">
+                            <span class="total-label">Total</span>
+                            <span class="total-amount" id="total-sticky">$285.00</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -320,22 +322,24 @@
                         </table>
                     </div>
 
-                    <div class="quote-totals">
-                        <div class="totals-row">
-                            <span>Subtotal:</span>
-                            <span>$250.00</span>
+                    <div class="quote-totals-summary">
+                        <div class="totals-detail">
+                            <div class="totals-row">
+                                <span>Subtotal:</span>
+                                <span>$250.00</span>
+                            </div>
+                            <div class="totals-row">
+                                <span>Descuentos:</span>
+                                <span class="negative">-$12.50</span>
+                            </div>
+                            <div class="totals-row">
+                                <span>Impuestos:</span>
+                                <span>$47.50</span>
+                            </div>
                         </div>
-                        <div class="totals-row">
-                            <span>Descuentos:</span>
-                            <span>-$12.50</span>
-                        </div>
-                        <div class="totals-row">
-                            <span>Impuestos:</span>
-                            <span>$47.50</span>
-                        </div>
-                        <div class="totals-row total">
-                            <span>Total:</span>
-                            <span>$285.00</span>
+                        <div class="total-highlight">
+                            <span class="total-label">Total</span>
+                            <span class="total-amount">$285.00</span>
                         </div>
                     </div>
 
@@ -349,19 +353,28 @@
                     </div>
                 </div>
 
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="editQuote()">
-                        <i class="fas fa-edit"></i>
-                        Editar
-                    </button>
-                    <button type="button" class="btn btn-outline" onclick="sendPDF()">
-                        <i class="fas fa-file-pdf"></i>
-                        Enviar PDF
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="convertToOrder()">
-                        <i class="fas fa-shopping-cart"></i>
-                        Convertir a pedido
-                    </button>
+                <!-- Sticky CTA Bar for Resumen -->
+                <div class="sticky-cta-bar">
+                    <div class="cta-content">
+                        <div class="cta-total-compact">
+                            <span class="cta-total-label">Total</span>
+                            <span class="cta-total-amount">$285.00</span>
+                        </div>
+                        <div class="cta-actions">
+                            <button type="button" class="btn btn-secondary" onclick="editQuote()">
+                                <i class="fas fa-edit"></i>
+                                <span>Editar</span>
+                            </button>
+                            <button type="button" class="btn btn-outline" onclick="sendPDF()">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Enviar PDF</span>
+                            </button>
+                            <button type="button" class="btn btn-cta-primary" onclick="convertToOrder()">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Convertir a pedido</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -410,23 +423,32 @@
                             <span>Cliente:</span>
                             <span>Industrias Gómez S.A.</span>
                         </div>
-                        <div class="summary-item">
-                            <span>Total:</span>
-                            <span class="total">$285.00</span>
+                        <div class="summary-item total-item">
+                            <span class="total-label">Total:</span>
+                            <span class="total-amount">$285.00</span>
                         </div>
                     </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="showScreen('quote-preview-screen')">
-                            <i class="fas fa-times"></i>
-                            Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-check"></i>
-                            Crear pedido
-                        </button>
-                    </div>
                 </form>
+
+                <!-- Sticky CTA for Order Creation -->
+                <div class="sticky-cta-bar">
+                    <div class="cta-content">
+                        <div class="cta-total-compact">
+                            <span class="cta-total-label">Total</span>
+                            <span class="cta-total-amount">$285.00</span>
+                        </div>
+                        <div class="cta-actions">
+                            <button type="button" class="btn btn-secondary" onclick="showScreen('quote-preview-screen')">
+                                <i class="fas fa-times"></i>
+                                <span>Cancelar</span>
+                            </button>
+                            <button type="submit" class="btn btn-cta-primary" onclick="event.preventDefault(); document.getElementById('order-form').dispatchEvent(new Event('submit'));">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Crear pedido</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -454,19 +476,35 @@
                 </div>
 
                 <div class="availability-results" id="availability-results">
-                    <div class="product-card">
-                        <div class="product-info">
-                            <h3>Bolsa plástica 30x40cm</h3>
-                            <p class="product-code">Código: BOL-3040</p>
-                            <p class="product-status available">✓ Disponible</p>
+                    <!-- Compact Product Card 1 -->
+                    <div class="product-card-compact">
+                        <div class="product-icon">
+                            <i class="fas fa-box"></i>
                         </div>
-                        <div class="product-stock">
-                            <div class="stock-total">
-                                <span class="stock-label">Disponible total:</span>
-                                <span class="stock-quantity">15,250 unidades</span>
+                        <div class="product-main-info">
+                            <div class="product-header">
+                                <div class="product-name-code">
+                                    <h3>Bolsa plástica 30x40cm</h3>
+                                    <p class="product-code">BOL-3040</p>
+                                </div>
+                                <span class="badge-stock badge-stock-ok">
+                                    <i class="fas fa-check-circle"></i>
+                                    OK
+                                </span>
                             </div>
-                            <div class="stock-lots">
-                                <h4>Lotes:</h4>
+                            <div class="product-stock-summary">
+                                <span class="stock-label">Stock disponible:</span>
+                                <span class="stock-quantity-large">15,250</span>
+                                <span class="stock-unit">unidades</span>
+                            </div>
+                            <button class="btn-accordion" onclick="toggleLots(this)">
+                                <span class="accordion-text">Ver lotes</span>
+                                <i class="fas fa-chevron-down accordion-icon"></i>
+                            </button>
+                        </div>
+                        <div class="product-lots-accordion">
+                            <div class="lots-content">
+                                <h4>Lotes disponibles</h4>
                                 <div class="lot-item">
                                     <span class="lot-code">L2025-001</span>
                                     <span class="lot-quantity">8,500 unidades</span>
@@ -479,23 +517,72 @@
                         </div>
                     </div>
 
-                    <div class="product-card">
-                        <div class="product-info">
-                            <h3>Película stretch 500mm</h3>
-                            <p class="product-code">Código: PEL-500</p>
-                            <p class="product-status low-stock">⚡ Stock bajo</p>
+                    <!-- Compact Product Card 2 -->
+                    <div class="product-card-compact">
+                        <div class="product-icon warning">
+                            <i class="fas fa-box"></i>
                         </div>
-                        <div class="product-stock">
-                            <div class="stock-total">
-                                <span class="stock-label">Disponible total:</span>
-                                <span class="stock-quantity">450 rollos</span>
+                        <div class="product-main-info">
+                            <div class="product-header">
+                                <div class="product-name-code">
+                                    <h3>Película stretch 500mm</h3>
+                                    <p class="product-code">PEL-500</p>
+                                </div>
+                                <span class="badge-stock badge-stock-low">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Bajo
+                                </span>
                             </div>
-                            <div class="stock-lots">
-                                <h4>Lotes:</h4>
+                            <div class="product-stock-summary">
+                                <span class="stock-label">Stock disponible:</span>
+                                <span class="stock-quantity-large warning">450</span>
+                                <span class="stock-unit">rollos</span>
+                            </div>
+                            <button class="btn-accordion" onclick="toggleLots(this)">
+                                <span class="accordion-text">Ver lotes</span>
+                                <i class="fas fa-chevron-down accordion-icon"></i>
+                            </button>
+                        </div>
+                        <div class="product-lots-accordion">
+                            <div class="lots-content">
+                                <h4>Lotes disponibles</h4>
                                 <div class="lot-item">
                                     <span class="lot-code">L2025-003</span>
                                     <span class="lot-quantity">450 rollos</span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compact Product Card 3 - Out of Stock -->
+                    <div class="product-card-compact">
+                        <div class="product-icon danger">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="product-main-info">
+                            <div class="product-header">
+                                <div class="product-name-code">
+                                    <h3>Cinta adhesiva transparente</h3>
+                                    <p class="product-code">CIN-TR48</p>
+                                </div>
+                                <span class="badge-stock badge-stock-out">
+                                    <i class="fas fa-times-circle"></i>
+                                    Agotado
+                                </span>
+                            </div>
+                            <div class="product-stock-summary">
+                                <span class="stock-label">Stock disponible:</span>
+                                <span class="stock-quantity-large danger">0</span>
+                                <span class="stock-unit">rollos</span>
+                            </div>
+                            <button class="btn-accordion" onclick="toggleLots(this)" disabled>
+                                <span class="accordion-text">Sin lotes</span>
+                                <i class="fas fa-chevron-down accordion-icon"></i>
+                            </button>
+                        </div>
+                        <div class="product-lots-accordion">
+                            <div class="lots-content">
+                                <p class="no-lots">No hay lotes disponibles</p>
                             </div>
                         </div>
                     </div>
@@ -551,8 +638,9 @@
                                 <span class="quote-client">Industrias Gómez S.A.</span>
                                 <span class="quote-date">Hoy, 2:30 PM</span>
                             </div>
-                            <div class="quote-total">
-                                <span>$285.00</span>
+                            <div class="quote-total-prominent">
+                                <span class="total-label-small">Total</span>
+                                <span class="total-value">$285.00</span>
                             </div>
                         </div>
                         <div class="quote-actions">
@@ -564,7 +652,7 @@
                                 <i class="fas fa-copy"></i>
                                 Duplicar
                             </button>
-                            <button class="btn btn-sm btn-primary" onclick="convertQuoteToOrder('COT-00124')">
+                            <button class="btn btn-sm btn-cta-primary" onclick="convertQuoteToOrder('COT-00124')">
                                 <i class="fas fa-shopping-cart"></i>
                                 Convertir
                             </button>
@@ -581,8 +669,9 @@
                                 <span class="quote-client">Comercial López</span>
                                 <span class="quote-date">Ayer, 11:45 AM</span>
                             </div>
-                            <div class="quote-total">
-                                <span>$1,450.00</span>
+                            <div class="quote-total-prominent">
+                                <span class="total-label-small">Total</span>
+                                <span class="total-value">$1,450.00</span>
                             </div>
                         </div>
                         <div class="quote-actions">
@@ -594,7 +683,7 @@
                                 <i class="fas fa-copy"></i>
                                 Duplicar
                             </button>
-                            <button class="btn btn-sm btn-primary" onclick="convertQuoteToOrder('COT-00123')">
+                            <button class="btn btn-sm btn-cta-primary" onclick="convertQuoteToOrder('COT-00123')">
                                 <i class="fas fa-shopping-cart"></i>
                                 Convertir
                             </button>
@@ -611,8 +700,9 @@
                                 <span class="quote-client">Empresas Martínez</span>
                                 <span class="quote-date">15 Oct, 4:20 PM</span>
                             </div>
-                            <div class="quote-total">
-                                <span>$890.00</span>
+                            <div class="quote-total-prominent">
+                                <span class="total-label-small">Total</span>
+                                <span class="total-value">$890.00</span>
                             </div>
                         </div>
                         <div class="quote-actions">
@@ -642,6 +732,113 @@
                     </button>
                 </div>
             </div>
+        </div>
+
+        <!-- Orders List Screen -->
+        <div id="orders-list-screen" class="screen-content">
+            <div class="container">
+                <div class="page-header">
+                    <button class="btn-icon" onclick="showScreen('dashboard-screen')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="page-title">Pedidos</h1>
+                </div>
+
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="order-status-filter">Estado</label>
+                        <select id="order-status-filter" onchange="filterOrders()">
+                            <option value="">Todos</option>
+                            <option value="open">Abierto</option>
+                            <option value="in-production">En producción</option>
+                            <option value="dispatched">Despachado</option>
+                            <option value="delivered">Entregado</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="order-client-filter">Cliente</label>
+                        <input type="text" id="order-client-filter" placeholder="Buscar cliente" onkeyup="filterOrders()">
+                    </div>
+                </div>
+
+                <div class="orders-list" id="orders-list">
+                    <div class="order-item">
+                        <div class="order-info">
+                            <div class="order-header-info">
+                                <span class="order-number">PED-00156</span>
+                                <span class="badge badge-in-production">En producción</span>
+                            </div>
+                            <div class="order-details">
+                                <span class="order-client">Industrias Gómez S.A.</span>
+                                <span class="order-date">Entrega: 25 Nov 2025</span>
+                            </div>
+                            <div class="order-total">
+                                <span>$285.00</span>
+                            </div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewOrder('PED-00156')">
+                                <i class="fas fa-eye"></i>
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="trackOrder('PED-00156')">
+                                <i class="fas fa-truck"></i>
+                                Seguir
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="order-item">
+                        <div class="order-info">
+                            <div class="order-header-info">
+                                <span class="order-number">PED-00155</span>
+                                <span class="badge badge-dispatched">Despachado</span>
+                            </div>
+                            <div class="order-details">
+                                <span class="order-client">Comercial López</span>
+                                <span class="order-date">Entrega: 20 Nov 2025</span>
+                            </div>
+                            <div class="order-total">
+                                <span>$1,450.00</span>
+                            </div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewOrder('PED-00155')">
+                                <i class="fas fa-eye"></i>
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="trackOrder('PED-00155')">
+                                <i class="fas fa-truck"></i>
+                                Seguir
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="order-item">
+                        <div class="order-info">
+                            <div class="order-header-info">
+                                <span class="order-number">PED-00154</span>
+                                <span class="badge badge-open">Abierto</span>
+                            </div>
+                            <div class="order-details">
+                                <span class="order-client">Empresas Martínez</span>
+                                <span class="order-date">Entrega: 28 Nov 2025</span>
+                            </div>
+                            <div class="order-total">
+                                <span>$890.00</span>
+                            </div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewOrder('PED-00154')">
+                                <i class="fas fa-eye"></i>
+                                Ver
+                            </button>
+                            <button class="btn btn-sm btn-outline" onclick="trackOrder('PED-00154')">
+                                <i class="fas fa-truck"></i>
+                                Seguir
+                </form>
+            </div>
+
         </div>
 
         <!-- Orders List Screen -->
