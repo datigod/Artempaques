@@ -233,7 +233,7 @@ class ArtempaquesApp {
         // Generate order number
         const orderNumber = `PED-${String(Math.floor(Math.random() * 1000) + 100).padStart(3, '0')}`;
         
-        this.showToast('success', '¡Pedido creado!', 'Pedido ${orderNumber} creado exitosamente');
+        this.showToast('success', '¡Pedido creado!', `Pedido ${orderNumber} creado exitosamente`);
         this.showScreen('orders-list-screen');
     }
 
