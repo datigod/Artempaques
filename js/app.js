@@ -413,8 +413,66 @@ class ArtempaquesApp {
         this.showScreen('new-quote-screen');
     }
 
-    sendPDF() {
-        this.showToast('success', 'PDF enviado', 'El PDF ha sido enviado al cliente');
+    async sendPDF() {
+        const previewContainer = document.querySelector('#quote-preview-screen .quote-preview');
+
+        if (!previewContainer) {
+            this.showToast('error', 'PDF no disponible', 'No se encontró la vista previa de la cotización');
+            return;
+        }
+
+        if (typeof html2canvas === 'undefined' || !window.jspdf || !window.jspdf.jsPDF) {
+            this.showToast('error', 'PDF no disponible', 'No se pudieron cargar las librerías para exportar el documento');
+            return;
+        }
+
+        try {
+            this.showToast('info', 'Generando PDF', 'Preparando la descarga de la cotización...');
+
+            const canvas = await html2canvas(previewContainer, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                windowWidth: previewContainer.scrollWidth,
+                windowHeight: previewContainer.scrollHeight
+            });
+
+            const imageData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            let heightLeft = pdfHeight;
+            let position = 0;
+
+            pdf.addImage(imageData, 'PNG', 0, position, pdfWidth, pdfHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft > 0) {
+                position = heightLeft - pdfHeight;
+                pdf.addPage();
+                pdf.addImage(imageData, 'PNG', 0, position, pdfWidth, pdfHeight);
+                heightLeft -= pageHeight;
+            }
+
+            const quoteTitle = previewContainer.querySelector('.quote-info h3');
+            const baseFileName = quoteTitle ? quoteTitle.textContent.trim() : 'cotizacion';
+            const normalizedFileName = typeof baseFileName.normalize === 'function'
+                ? baseFileName.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                : baseFileName;
+            const sanitizedFileName = normalizedFileName
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '') || 'cotizacion';
+
+            pdf.save(`${sanitizedFileName}.pdf`);
+            this.showToast('success', 'PDF generado', 'La cotización se descargó correctamente');
+        } catch (error) {
+            console.error('Error al generar el PDF', error);
+            this.showToast('error', 'Error al generar PDF', 'Ocurrió un error al crear el documento');
+        }
     }
 
     convertToOrder() {
