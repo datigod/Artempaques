@@ -3,12 +3,10 @@ class ArtempaquesApp {
     constructor() {
         this.currentScreen = 'login';
         this.currentQuote = null;
-        this.currentQuoteData = null;
         this.quotes = [];
         this.orders = [];
         this.clients = [];
         this.products = [];
-        this.orderCounter = 156;
         
         this.init();
     }
@@ -166,11 +164,6 @@ class ArtempaquesApp {
         
         // Update page title
         this.updatePageTitle(screenId);
-        
-        // Render orders list when showing orders screen
-        if (screenId === 'orders-list-screen') {
-            this.renderOrdersList();
-        }
     }
 
     updatePageTitle(screenId) {
@@ -220,24 +213,9 @@ class ArtempaquesApp {
         }
 
         // Generate quote number
-        const quoteNumber = `COT-${String(Math.floor(Math.random() * 1000) + 100).padStart(5, '0')}`;
+        const quoteNumber = `COT-${String(Math.floor(Math.random() * 1000) + 100).padStart(3, '0')}`;
         
-        // Get total from sticky bar
-        const totalElement = document.getElementById('total-sticky');
-        const total = totalElement ? totalElement.textContent : '$0.00';
-        
-        // Get client name
-        const clientName = clientInfo.querySelector('h3') ? clientInfo.querySelector('h3').textContent : 'Cliente';
-        
-        // Store current quote data
-        this.currentQuoteData = {
-            number: quoteNumber,
-            client: clientName,
-            total: total,
-            date: new Date()
-        };
-        
-        this.showToast('success', '¡Éxito!', `Cotización ${quoteNumber} guardada correctamente`);
+        this.showToast('success', '¡Éxito!', 'Cotización guardada correctamente');
         this.showScreen('quote-preview-screen');
     }
 
@@ -246,7 +224,6 @@ class ArtempaquesApp {
         
         const deliveryDate = document.getElementById('delivery-date').value;
         const notes = document.getElementById('order-notes').value;
-        const priority = document.getElementById('priority').value;
         
         if (!deliveryDate) {
             this.showToast('error', 'Error', 'Por favor seleccione una fecha de entrega');
@@ -254,36 +231,9 @@ class ArtempaquesApp {
         }
 
         // Generate order number
-        this.orderCounter++;
-        const orderNumber = `PED-${String(this.orderCounter).padStart(5, '0')}`;
+        const orderNumber = `PED-${String(Math.floor(Math.random() * 1000) + 100).padStart(3, '0')}`;
         
-        // Get current quote data or default values
-        const client = this.currentQuoteData ? this.currentQuoteData.client : 'Cliente';
-        const total = this.currentQuoteData ? this.currentQuoteData.total : '$0.00';
-        
-        // Format delivery date
-        const dateObj = new Date(deliveryDate);
-        const formattedDate = dateObj.toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
-        
-        // Create new order
-        const newOrder = {
-            number: orderNumber,
-            client: client,
-            total: total,
-            deliveryDate: formattedDate,
-            status: 'open',
-            notes: notes,
-            priority: priority,
-            createdAt: new Date()
-        };
-        
-        // Add to orders array
-        this.orders.unshift(newOrder);
-        
-        // Update orders list in DOM
-        this.renderOrdersList();
-        
-        this.showToast('success', '¡Pedido creado!', `Pedido ${orderNumber} creado exitosamente`);
+        this.showToast('success', '¡Pedido creado!', 'Pedido ${orderNumber} creado exitosamente');
         this.showScreen('orders-list-screen');
     }
 
@@ -464,140 +414,8 @@ class ArtempaquesApp {
     }
 
     sendPDF() {
-        // Generate PDF content
-        this.generatePDF();
+        this.showToast('success', 'PDF enviado', 'El PDF ha sido enviado al cliente');
     }
-    
-    generatePDF() {
-        const quoteData = this.currentQuoteData || {
-            number: 'COT-00124',
-            client: 'Industrias G\u00f3mez S.A.',
-            total: '$285.00'
-        };\n        
-        // Create a simple HTML content for PDF
-        const pdfContent = `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset=\"UTF-8\">
-    <title>Cotizaci\u00f3n ${quoteData.number}</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
-        .header { display: flex; justify-content: space-between; margin-bottom: 30px; border-bottom: 3px solid #0D47A1; padding-bottom: 20px; }
-        .company { color: #0D47A1; }
-        .company h1 { margin: 0; font-size: 28px; }
-        .quote-info { text-align: right; }
-        .quote-info h2 { margin: 0; color: #0D47A1; font-size: 24px; }
-        .client-section { margin: 30px 0; padding: 20px; background-color: #E3F2FD; border-radius: 8px; }
-        .client-section h3 { margin-top: 0; color: #0D47A1; }
-        table { width: 100%; border-collapse: collapse; margin: 30px 0; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background-color: #0D47A1; color: white; }
-        .totals { margin-top: 30px; text-align: right; }
-        .totals .row { display: flex; justify-content: flex-end; gap: 100px; padding: 8px 0; }
-        .totals .total-row { font-size: 20px; font-weight: bold; border-top: 2px solid #0D47A1; padding-top: 15px; margin-top: 15px; background-color: #E3F2FD; padding: 15px; border-radius: 8px; }
-        .conditions { margin-top: 40px; padding: 20px; background-color: #f5f5f5; border-radius: 8px; }
-        .conditions h3 { color: #0D47A1; }
-        .footer { margin-top: 50px; text-align: center; color: #666; font-size: 12px; border-top: 1px solid #ddd; padding-top: 20px; }
-    </style>
-</head>
-<body>
-    <div class=\"header\">
-        <div class=\"company\">
-            <h1>Artempaques S.A.</h1>
-            <p>Calle 50 #25-123, Medell\u00edn</p>
-            <p>NIT: 890.123.456-7</p>
-            <p>Tel: (604) 444-5555</p>
-        </div>
-        <div class=\"quote-info\">
-            <h2>Cotizaci\u00f3n</h2>
-            <p><strong>${quoteData.number}</strong></p>
-            <p>Fecha: ${new Date().toLocaleDateString('es-CO')}</p>
-            <p>Validez: 30 d\u00edas</p>
-        </div>
-    </div>
-    
-    <div class=\"client-section\">
-        <h3>Cliente</h3>
-        <p><strong>${quoteData.client}</strong></p>
-        <p>NIT: 890.123.456-7</p>
-        <p>Contacto: Carlos Rodr\u00edguez</p>
-        <p>Tel: (604) 234-5678</p>
-    </div>
-    
-    <h3 style=\"color: #0D47A1;\">Detalles de la cotizaci\u00f3n</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio Unit.</th>
-                <th>Descuento</th>
-                <th>Impuesto</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Bolsa pl\u00e1stica 30x40cm</td>
-                <td>1,000</td>
-                <td>$0.25</td>
-                <td>5%</td>
-                <td>19%</td>
-                <td>$237.50</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <div class=\"totals\">
-        <div class=\"row\">
-            <span>Subtotal:</span>
-            <span>$250.00</span>
-        </div>
-        <div class=\"row\">
-            <span>Descuentos:</span>
-            <span style=\"color: #f44336;\">-$12.50</span>
-        </div>
-        <div class=\"row\">
-            <span>Impuestos:</span>
-            <span>$47.50</span>
-        </div>
-        <div class=\"row total-row\">
-            <span>TOTAL:</span>
-            <span>${quoteData.total}</span>
-        </div>
-    </div>
-    
-    <div class=\"conditions\">
-        <h3>Condiciones comerciales</h3>
-        <ul>
-            <li>Forma de pago: 30 d\u00edas</li>
-            <li>Tiempo de entrega: 15 d\u00edas h\u00e1biles</li>
-            <li>Validez de la cotizaci\u00f3n: 30 d\u00edas</li>
-            <li>Precios sujetos a disponibilidad de inventario</li>
-        </ul>
-    </div>
-    
-    <div class=\"footer\">
-        <p>Artempaques S.A. - Soluciones en empaques pl\u00e1sticos</p>
-        <p>www.artempaques.com | ventas@artempaques.com</p>
-    </div>
-</body>
-</html>
-        `;
-        
-        // Create blob and download
-        const blob = new Blob([pdfContent], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Cotizacion_${quoteData.number}_${new Date().getTime()}.html`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        
-        this.showToast('success', 'PDF generado', `Cotizaci\u00f3n ${quoteData.number} descargada como HTML (abrir en navegador para imprimir como PDF)`);\n    }
 
     convertToOrder() {
         this.showScreen('convert-order-screen');
@@ -648,154 +466,6 @@ class ArtempaquesApp {
     showUserMenu() {
         const dropdown = document.getElementById('user-dropdown');
         dropdown.classList.toggle('show');
-    }
-
-    renderOrdersList() {
-        const ordersList = document.getElementById('orders-list');
-        if (!ordersList) return;
-        
-        // Clear existing orders (keep only sample orders if no custom orders)
-        if (this.orders.length === 0) return;
-        
-        // Generate HTML for all orders
-        let ordersHTML = '';
-        
-        // Add custom orders first
-        this.orders.forEach(order => {
-            const badgeClass = this.getOrderBadgeClass(order.status);
-            const badgeText = this.getOrderBadgeText(order.status);
-            
-            ordersHTML += `
-                <div class="order-item">
-                    <div class="order-info">
-                        <div class="order-header-info">
-                            <span class="order-number">${order.number}</span>
-                            <span class="badge ${badgeClass}">${badgeText}</span>
-                        </div>
-                        <div class="order-details">
-                            <span class="order-client">${order.client}</span>
-                            <span class="order-date">Entrega: ${order.deliveryDate}</span>
-                        </div>
-                        <div class="order-total">
-                            <span>${order.total}</span>
-                        </div>
-                    </div>
-                    <div class="order-actions">
-                        <button class="btn btn-sm btn-outline" onclick="viewOrder('${order.number}')">
-                            <i class="fas fa-eye"></i>
-                            Ver
-                        </button>
-                        <button class="btn btn-sm btn-outline" onclick="trackOrder('${order.number}')">
-                            <i class="fas fa-truck"></i>
-                            Seguir
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-        
-        // Add sample orders
-        ordersHTML += `
-            <div class="order-item">
-                <div class="order-info">
-                    <div class="order-header-info">
-                        <span class="order-number">PED-00156</span>
-                        <span class="badge badge-in-production">En producción</span>
-                    </div>
-                    <div class="order-details">
-                        <span class="order-client">Industrias Gómez S.A.</span>
-                        <span class="order-date">Entrega: 25 Nov 2025</span>
-                    </div>
-                    <div class="order-total">
-                        <span>$285.00</span>
-                    </div>
-                </div>
-                <div class="order-actions">
-                    <button class="btn btn-sm btn-outline" onclick="viewOrder('PED-00156')">
-                        <i class="fas fa-eye"></i>
-                        Ver
-                    </button>
-                    <button class="btn btn-sm btn-outline" onclick="trackOrder('PED-00156')">
-                        <i class="fas fa-truck"></i>
-                        Seguir
-                    </button>
-                </div>
-            </div>
-            
-            <div class="order-item">
-                <div class="order-info">
-                    <div class="order-header-info">
-                        <span class="order-number">PED-00155</span>
-                        <span class="badge badge-dispatched">Despachado</span>
-                    </div>
-                    <div class="order-details">
-                        <span class="order-client">Comercial López</span>
-                        <span class="order-date">Entrega: 20 Nov 2025</span>
-                    </div>
-                    <div class="order-total">
-                        <span>$1,450.00</span>
-                    </div>
-                </div>
-                <div class="order-actions">
-                    <button class="btn btn-sm btn-outline" onclick="viewOrder('PED-00155')">
-                        <i class="fas fa-eye"></i>
-                        Ver
-                    </button>
-                    <button class="btn btn-sm btn-outline" onclick="trackOrder('PED-00155')">
-                        <i class="fas fa-truck"></i>
-                        Seguir
-                    </button>
-                </div>
-            </div>
-            
-            <div class="order-item">
-                <div class="order-info">
-                    <div class="order-header-info">
-                        <span class="order-number">PED-00154</span>
-                        <span class="badge badge-open">Abierto</span>
-                    </div>
-                    <div class="order-details">
-                        <span class="order-client">Empresas Martínez</span>
-                        <span class="order-date">Entrega: 28 Nov 2025</span>
-                    </div>
-                    <div class="order-total">
-                        <span>$890.00</span>
-                    </div>
-                </div>
-                <div class="order-actions">
-                    <button class="btn btn-sm btn-outline" onclick="viewOrder('PED-00154')">
-                        <i class="fas fa-eye"></i>
-                        Ver
-                    </button>
-                    <button class="btn btn-sm btn-outline" onclick="trackOrder('PED-00154')">
-                        <i class="fas fa-truck"></i>
-                        Seguir
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        ordersList.innerHTML = ordersHTML;
-    }
-    
-    getOrderBadgeClass(status) {
-        const badges = {
-            'open': 'badge-open',
-            'in-production': 'badge-in-production',
-            'dispatched': 'badge-dispatched',
-            'delivered': 'badge-approved'
-        };
-        return badges[status] || 'badge-open';
-    }
-    
-    getOrderBadgeText(status) {
-        const texts = {
-            'open': 'Abierto',
-            'in-production': 'En producción',
-            'dispatched': 'Despachado',
-            'delivered': 'Entregado'
-        };
-        return texts[status] || 'Abierto';
     }
 
     logout() {
